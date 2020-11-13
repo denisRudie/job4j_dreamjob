@@ -2,6 +2,8 @@
 <%@ page import="ru.job4j.dream.store.Store" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
 <%@ page import="java.util.Collection" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -23,6 +25,14 @@
     <title>Работа мечты</title>
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Home</a>
+            </li>
+        </ul>
+    </div>
 <div class="container pt-3">
 
     <div class="row">
@@ -38,16 +48,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Candidate can : (Collection<Candidate>) request.getAttribute("candidates")) { %>
-                    <tr>
-                        <td>
-                            <a href="<%=request.getContextPath()%>/candidate/edit.jsp?id=<%=can.getId()%>">
-                                <i class="fa fa-edit mr-3"></i>
-                            </a>
-                            <%=can.getName()%>
-                        </td>
-                    </tr>
-                    <% } %>
+                    <c:forEach items="${candidates}" var="cand">
+                        <tr>
+                            <td>
+                                <a href="<c:url value="/candidate/edit.jsp?id=${cand.id}"/>">
+                                    <i class="fa fa-edit mr-3"></i>
+                                </a>
+                                <c:out value="${cand.name}"/>
+                            </td>
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
