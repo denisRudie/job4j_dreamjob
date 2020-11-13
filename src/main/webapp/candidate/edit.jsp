@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="ru.job4j.dream.store.Store" %>
+<%@ page import="ru.job4j.dream.store.MemStore" %>
 <%@ page import="ru.job4j.dream.model.Post" %>
 <%@ page import="ru.job4j.dream.model.Candidate" %>
 <!doctype html>
@@ -26,7 +26,7 @@
     String id = request.getParameter("id");
     Candidate cand = new Candidate(0, "");
     if (id != null) {
-        cand = Store.instOf().findCandById(Integer.parseInt(id));
+        cand = MemStore.instOf().findCandById(Integer.parseInt(id));
     }
 %>
 <div class="container">
