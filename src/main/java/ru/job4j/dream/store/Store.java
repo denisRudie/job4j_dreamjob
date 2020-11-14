@@ -17,4 +17,6 @@ public interface Store {
     Post findPostById(int id);
 
     Candidate findCandById(int id);
+
+    int addPhoto(int id);
 }
