@@ -194,7 +194,7 @@ public class PsqlStore implements Store {
     private User create(User user) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "INSERT INTO user(name, email, password) VALUES (?, ?, ?)",
+                     "INSERT INTO users(name, email, password) VALUES (?, ?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, user.getName());
@@ -215,7 +215,7 @@ public class PsqlStore implements Store {
     private void update(User user) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "update user set name = ?, email = ?, password = ?  where id = ?")
+                     "update users set name = ?, email = ?, password = ?  where id = ?")
         ) {
             ps.setString(1, user.getName());
             ps.setString(2, user.getEmail());
@@ -232,7 +232,7 @@ public class PsqlStore implements Store {
         User user = new User(0, "", email, "");
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "select * from user where email = ?")
+                     "select * from users where email = ?")
         ) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
@@ -253,7 +253,7 @@ public class PsqlStore implements Store {
         List<User> users = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "SELECT * FROM user")
+                     "SELECT * FROM users")
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
@@ -338,14 +338,5 @@ public class PsqlStore implements Store {
             LOG.error(e.getMessage(), e);
         }
         return cand;
-    }
-
-    public static void main(String[] args) {
-        Collection<Candidate> allCandidates = PsqlStore.instOf().findAllCandidates();
-        for (Candidate allCandidate : allCandidates) {
-            System.out.print(" id: " + allCandidate.getId());
-            System.out.print(" name: " + allCandidate.getName());
-            System.out.println(" photo: " + allCandidate.getPhotoId());
-        }
     }
 }
