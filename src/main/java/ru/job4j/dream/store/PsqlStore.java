@@ -22,7 +22,6 @@ public class PsqlStore implements Store {
     private final BasicDataSource pool = new BasicDataSource();
     private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class);
     
-    
     private PsqlStore() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
