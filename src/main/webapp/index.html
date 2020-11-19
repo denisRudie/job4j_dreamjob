@@ -31,6 +31,26 @@
             }
         }
     </script>
+    <script>
+        function addRow() {
+            var fn = $('#firstName').val();
+            var ln = $('#lastName').val();
+            var m = document.getElementById('male');
+            var f = document.getElementById('female');
+            var desc = $('#description').val();
+            var sex = '';
+            if (f.checked) {
+                sex = 'female';
+            }
+            if (m.checked) {
+                sex = 'male';
+            }
+            $('#candidates tr:last').after(
+                '<tr><td>' + fn + '</td><td>' + ln + '</td><td>' + sex + '</td><td>' + desc +
+                '</td></tr>'
+            );
+        }
+    </script>
 </head>
 <body>
 <div class="container-fluid">
@@ -72,11 +92,14 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default" onclick="return validate();">Register
                 </button>
+                <button type="reset" class="btn btn-default" onclick="addRow();">Add
+                    into table
+                </button>
             </div>
         </div>
     </form>
     <div class="col-sm-8 col-sm-offset-2">
-        <table class="table">
+        <table class="table" id="candidates">
             <thead>
             <tr>
                 <th>Firstname</th>
