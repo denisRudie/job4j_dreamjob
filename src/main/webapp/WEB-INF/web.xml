@@ -41,6 +41,18 @@
     <servlet-name>JsonServlet</servlet-name>
     <servlet-class>ru.job4j.dream.servlet.JsonServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>TestServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.TestServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>CandidatesList</servlet-name>
+    <servlet-class>ru.job4j.dream.servletV2.CandidatesList</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>CandidateEdit</servlet-name>
+    <servlet-class>ru.job4j.dream.servletV2.CandidateEdit</servlet-class>
+  </servlet>
 
   <filter>
     <filter-name>AuthFilter</filter-name>
@@ -82,6 +94,18 @@
   <servlet-mapping>
     <servlet-name>JsonServlet</servlet-name>
     <url-pattern>/json</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>TestServlet</servlet-name>
+    <url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CandidatesList</servlet-name>
+    <url-pattern>/list</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CandidateEdit</servlet-name>
+    <url-pattern>/edit</url-pattern>
   </servlet-mapping>
   <filter-mapping>
     <filter-name>AuthFilter</filter-name>

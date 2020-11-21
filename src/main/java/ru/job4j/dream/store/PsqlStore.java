@@ -4,6 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
@@ -89,7 +90,8 @@ public class PsqlStore implements Store {
                             new Candidate(
                                     it.getInt("id"),
                                     it.getString("name"),
-                                    it.getInt("photo_id")
+                                    it.getInt("photo_id"),
+                                    it.getString("city")
                             )
                     );
                 }
@@ -140,10 +142,11 @@ public class PsqlStore implements Store {
     private Candidate create(Candidate cand) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "INSERT INTO candidate(name) VALUES (?)",
+                     "INSERT INTO candidate(name, city) VALUES (?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, cand.getName());
+            ps.setString(2, cand.getCity());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -272,6 +275,47 @@ public class PsqlStore implements Store {
         return users;
     }
 
+    @Override
+    public Collection<City> findAllCities() {
+        List<City> cities = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "SELECT * FROM city")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    cities.add(
+                            new City(
+                                    it.getString("name")
+                            )
+                    );
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return cities;
+    }
+
+    @Override
+    public City findCityByName(String name) {
+        City city = new City("");
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement(
+                     "select * from city where name = ?")
+        ) {
+            ps.setString(1, name);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    city.setName(rs.getString("name"));
+                }
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        return city;
+    }
+
     private void update(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
@@ -288,10 +332,11 @@ public class PsqlStore implements Store {
     private void update(Candidate cand) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
-                     "update candidate set name = ? where id = ?")
+                     "update candidate set name = ?, city = ? where id = ?")
         ) {
             ps.setString(1, cand.getName());
-            ps.setInt(2, cand.getId());
+            ps.setString(2, cand.getCity());
+            ps.setInt(3, cand.getId());
             ps.execute();
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
@@ -320,7 +365,7 @@ public class PsqlStore implements Store {
 
     @Override
     public Candidate findCandById(int id) {
-        Candidate cand = new Candidate(0, "");
+        Candidate cand = new Candidate(0, "", "");
         try (Connection cn = pool.getConnection();
              PreparedStatement ps = cn.prepareStatement(
                      "select * from candidate where id = ?")
@@ -330,6 +375,7 @@ public class PsqlStore implements Store {
                 if (rs.next()) {
                     cand.setId(rs.getInt("id"));
                     cand.setName(rs.getString("name"));
+                    cand.setCity(rs.getString("city"));
                     cand.setPhotoId(rs.getInt("photo_id"));
                 }
             }

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap first task</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function loadCandidates() {
+            $.ajax({
+                url: getContextPath() + '/list',
+                method: 'POST',
+                dataType: 'json'
+            }).done(function (data) {
+                $(data).each(function (index, el) {
+                    $('#table_body').append(
+                        '<tr>' +
+                        '<td>' + data[index].name + '</td>' +
+                        '<td>' + data[index].city + '</td>' +
+                        '<td>' + '<img src=' + getContextPath() + '/download?name='
+                        + data[index].id +
+                        ' alt="image doesnt exist" style="width:80px" id="image' +
+                        '"></td>' +
+                        '<td>' + addButtons(data[index].id) + '</td>' +
+                        '</tr>'
+                    )
+                    ;
+                })
+            }).fail(function (data) {
+                console.log(data);
+            });
+        }
+
+        function createCand() {
+            window.location.href = getContextPath() + '/edit';
+        }
+
+        function getContextPath() {
+            return location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+        }
+
+        function addButtons(id) {
+            var buttons = "<form>" +
+                "<div class=\"btn-group\">\n" +
+                " <input type='hidden' name='id' value='" + id + "'>" +
+                " <button type=\"submit\" class=\"btn btn-primary\" formaction='" +
+                getContextPath() + "/edit' formmethod='get'>Edit</button>\n" +
+                "</div>" +
+                "</form>";
+            return buttons.toString();
+        }
+    </script>
+</head>
+<body onload="loadCandidates()">
+<div class="container" id="reloadDiv">
+    <h1>Candidates list</h1>
+    <table class="table table-striped" id="iterable_table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>City</th>
+            <th>Photo</th>
+            <th>Edit</th>
+        </tr>
+        </thead>
+        <tbody id="table_body">
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" onclick="createCand()">Add candidate</button>
+</div>
+
+</body>
+</html>

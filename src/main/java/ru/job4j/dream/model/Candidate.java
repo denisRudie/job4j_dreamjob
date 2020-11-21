@@ -5,17 +5,33 @@ import java.util.Objects;
 public class Candidate {
     private int id;
     private String name;
+    private String city;
     private int photoId;
+
+    public Candidate(int id, String name, String city) {
+        this.id = id;
+        this.name = name;
+        this.city = city;
+    }
 
     public Candidate(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Candidate(int id, String name, int photoId) {
+    public Candidate(int id, String name, int photoId, String city) {
         this.id = id;
         this.name = name;
         this.photoId = photoId;
+        this.city = city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public int getId() {

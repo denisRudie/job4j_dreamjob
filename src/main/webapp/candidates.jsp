@@ -60,7 +60,8 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Названия</th>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Фото</th>
                         </tr>
                         </thead>
                         <tbody>
