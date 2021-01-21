@@ -26,7 +26,7 @@ public class PsqlStore implements Store {
     private PsqlStore() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("db.properties")
+                new FileReader("C:/projects/job4j_dreamjob/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {
